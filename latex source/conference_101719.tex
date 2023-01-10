@@ -1,0 +1,161 @@
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+% The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it out.
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+\begin{document}
+
+\title{Sistema de dosificación para máquinas pulverizadoras basado en inteligencia artificial\\
+%{\footnotesize \textsuperscript{*}Note: Sub-titles are not captured in Xplore and
+%should not be used}
+%\thanks{Identify applicable funding agency here. If none, delete this.}
+}
+
+\author{\IEEEauthorblockN{1\textsuperscript{st} Allegrini, Tomás Agustín}
+\IEEEauthorblockA{\textit{Departamento de Ingeniería en} \\
+\textit{Electrónica y Computación}\\
+\textit{Universidad Nacional de Mar del Plata}\\
+Mar del Plata, Argentina \\
+tallegrini74@gmail.com}
+\and
+\IEEEauthorblockN{2\textsuperscript{nd} Arenas Ferreira, Juan Enrique}
+\IEEEauthorblockA{\textit{Departamento de Ingeniería en} \\
+\textit{Electrónica y Computación}\\
+\textit{Universidad Nacional de Mar del Plata}\\
+Mar del Plata, Argentina \\
+juan99eaf@gmail.com}
+\and
+\IEEEauthorblockN{3\textsuperscript{rd} Vazquez, Leonardo David}
+\IEEEauthorblockA{\textit{Departamento de Ingeniería en} \\
+\textit{Electrónica y Computación}\\
+\textit{Universidad Nacional de Mar del Plata}\\
+Mar del Plata, Argentina \\
+leonardo.vazquez@alumnos.fi.mdp.edu.ar}}
+%\and
+%{\IEEEauthorblockN{4\textsuperscript{th} Given Name Surname}
+%\IEEEauthorblockA{\textit{dept. name of organization (of Aff.)} \\
+%\textit{name of organization (of Aff.)}\\
+%City, Country \\
+%email address or ORCID}
+%\and
+%\IEEEauthorblockN{5\textsuperscript{th} Given Name Surname}
+%\IEEEauthorblockA{\textit{dept. name of organization (of Aff.)} \\
+%\textit{name of organization (of Aff.)}\\
+%City, Country \\
+%email address or ORCID}
+%\and
+%\IEEEauthorblockN{6\textsuperscript{th} Given Name Surname}
+%\IEEEauthorblockA{\textit{dept. name of organization (of Aff.)} \\
+%\textit{name of organization (of Aff.)}\\
+%City, Country \\
+%email address or ORCID}
+%}
+
+
+\maketitle
+
+\begin{abstract}
+Este trabajo consta en el diseño de un prototipo de un sistema de dosificación de herbicidas mediante técnicas de inteligencia artificial y tecnologías del Internet de Las Cosas (IoT) para su aplicación en máquinas pulverizadoras de la agroindustria. El equipo es capaz de actuar sobre los aspersores para dosificar de manera óptima a las malezas indeseadas. Además, puede monitorear en tiempo real la cantidad de material agroquímico disponible y algunos parámetros de la máquina pulverizadora.  
+La idea de este equipo es que pueda realizar las tareas automáticamente, a medida que transmite los datos relevados mediante un radioenlace para un posterior análisis. Algunas de sus utilidades puede ser la medición de la cantidad de líquido utilizado para su ahorro, fomentando un mejor uso del mismo y disminuyendo la contaminación al medio ambiente.
+El prototipo, además, cuenta con la posibilidad de recibir comandos para realizar acciones tales como la desconexión de aspersores y la indicación de una alarma de fallas.
+
+\end{abstract}
+
+\begin{IEEEkeywords}
+herbicida, pulverización, inteligencia artificial, internet de las cosas, contaminación ambiental
+\end{IEEEkeywords}
+
+\section{Introducción}
+En el mundo del agro actual existe una problemática de gran importancia, la cual es la ineficiencia en el uso de herbicidas en las pulverizadoras. 
+En los últimos 20 años el uso de estos químicos se ha incrementado más del 400{\%} [1] y el problema radica directamente en la cantidad que alcanza los cultivos, siendo esta solo del 45{\%}, es decir, que el 55\% restante es desperdiciado.
+Esto implica una gran perdida en cuanto a costos y, teniendo en cuenta el uso excesivo de agroquímicos, implica una contaminación mayor sobre el medio ambiente y en especial en la zona de cultivo.
+La causa principal de esta problemática es debido a la falta de control en la pulverización. Las máquinas de pulverización convencionales, conocidas como mosquitos, al realizar una ronda de pulverización, realizan una aplicación uniforme, es decir, aplican los agroquímicos sobre todo lo que se interpone en su camino, traduciéndose esto en una ineficiencia. 
+Tampoco cuentan con un sistema de aviso de fallas, por lo que en la situación de aspersor obstruido no se aplica el herbicida en el objetivo, o también en el caso de agotamiento del agroquímico, donde solo se puede recurrir a un procedimiento humano para identificarlo.
+El primer paso para obtener el control en la pulverización, de manera agnóstica al tipo de cultivo, es implementar dosificadores inteligentes sobre las máquinas pulverizadoras. 
+Para ello, a partir del uso de sensores e inteligencia artificial [3], se puede identificar la maleza y utilizar la información de manera apropiada para aplicar una pulverización efectiva y con la cantidad justa de agroquímico requerido. A partir del uso de una cámara que detecta la maleza y de una red neuronal, se logra identificar el momento y lugar exacto en donde aplicar el herbicida mediante una electroválvula, siendo independiente de la conectividad en la nube, lo cual es una problemática muy común en zonas rurales. Al margen de eso, a través del uso de la tecnología inalámbrica LoRaWAN [4], se transmite, de manera periódica hacia una puerta de enlace con la nube, información sobre la ubicación de la máquina pulverizadora y volumen del agroquímico, y a través de la nube, se provee un panel de visualización y control (dashboard) con los datos mencionados, además de estadística y avisos de fallas.
+
+% hola juan
+
+\section{Arquitectura del sistema}
+
+La arquitectura del sistema (figura \ref{fig}) está compuesta por un nodo "PulverizAR", es decir, el aparato instalado en la máquina mosquito, un nodo central o Gateway quien brinda conectividad hacia internet, un servidor LoRaWAN que actúa como administrador de la red, y por último un servidor para el panel de control y la muestra de la información hacia los clientes. 
+
+\begin{figure}[htbp]
+\centerline{\includegraphics[width=240 pt]{diagrams/paper.drawio_v3.pdf}}
+\caption{Arquitectura del sistema.}
+\label{fig}
+\end{figure}
+
+
+El nodo autónomo PulverizAR (figura \ref{fig2}) es el dispositivo inteligente encargado de procesar la información de los sensores de GPS, nivel de líquido, obstrucción de aspersores y la cámara de detección de objetos para actuar sobre los aspersores de pulverización. Para enviar todos los datos de estos parámetros hacia el nodo central, se emplea un módulo transceptor LoRaWAN. El Hardware del nodo es instalado en los mosquitos y su Software está embebido en un ordenador de placa simple de bajo costo, como lo puede ser una Raspberry Pi 4 [5], el cual posee un sistema operativo Linux capaz de manejar los procesos y funcionalidades del sistema (figuras \ref{fig3} y \ref{fig4}). 
+
+
+\begin{figure}[htbp]
+\centerline{\includegraphics[width=180 pt]{diagrams/LoRaWAN NODE v2.pdf}}
+\caption{Nodo PulverizAR.}
+\label{fig2}
+\end{figure}
+
+Uno de los procesos del sistema se encarga de obtener imágenes a través de la cámara, y por medio de una red neuronal, entrenada e implementada sobre TensorFlow [5], a través de la herramienta EdgeImpulse [6], generar una señal hacia el proceso "dispatcher" que analiza el evento que ocurre y procede a actuar sobre la electroválvula para dosificar la cantidad óptima de herbicida en la maleza. De forma concurrente, se verifica cuando se debe enviar una señal de evento para iniciar la transmisión, a través del enlace LoRaWAN, de los datos de estado del mosquito. Al recolectar información del estado del equipo, también es posible definir un estado del mismo, ya sea una falla o funcionamiento correcto.
+
+
+\begin{figure}[htbp]
+\centerline{\includegraphics[width=120 pt]{diagrams/Event Dispatcher (2).pdf}}
+\caption{Proceso principal del sistema embebido.}
+\label{fig3}
+\end{figure}
+
+
+
+
+\begin{figure}[htbp]
+\centerline{\includegraphics[width=150 pt]{diagrams/weeds detection and period timer.pdf}}
+\caption{Procesos "Detección de Malezas" y "Transmisor de datos".}
+\label{fig4}
+\end{figure}
+
+
+
+
+
+El gateway LoRaWAN se encarga de brindar conectividad hacia internet y subir todos los datos aportados por el nodo PulverizAR. A través del uso del servidor de la red LoRaWAN de la plataforma The Things Network (TTN) [7], se pueden administrar datos directamente en la nube. Para proporcionar un sistema de control y visualización, se utiliza la integración virtual de TTN en la plataforma Datacake [8]. Con Datacake, es posible generar un dashboard para gestionar los datos de sensores, realizar estadísticas e inclusive generar sistemas de alarma para el cliente final, quien puede obtener toda la información desde su PC de escritorio o su Smartphone, entre otros dispositivos posibles.
+
+
+\section{Conclusiones}
+% conclusion
+En este trabajo se logró diseñar un sistema completo que permite un aplique de herbicida de forma más eficiente gracias a las decisiones tomadas de forma autónoma usando Inteligencia Artificial. De esta manera, se logra una disminución en la contaminación del suelo, logrando un medio ambiente más ecológico y sostenible. 
+
+% trabajo posterior
+Debido a la flexibilidad en el diseño del sistema, en el futuro se desean incluir otros funcionamientos, como puede ser la inclusión de una nueva red neuronal capaz de discernir entre diferentes plantas. Además, para hacer al sistema más robusto, se propone reemplazar la manera en que se brinda conectividad hacia la nube mediante un enlace satelital en vez de la implementación con LoRaWAN. 
+
+
+\begin{thebibliography}{00}
+\bibitem{b1} L Moltoni, "Evolución del mercado de herbicidas en Argentina", Ediciones INTA, Argentina, vol. 1, no. 2, ISSN 2314-2197, 2012.
+
+%\bibitem{b2} L Brambilla."Buenas Prácticas en la Utilización de Fitosanitarios". Ediciones INTA, Argentina, 2014.
+
+\bibitem{b2} M Ayaz, M Ammad-Uddin, Z Sharif, A Mansour and EHM. Aggoune, "Internet-of-Things (IoT)-based smart agriculture: Toward making the fields talk", IEEE Access, vol. 2019, no. 7, pp. 129551-83.
+
+\bibitem{b3} A Bhawiyuga, DP Kartikasari, K Amron, OB Pratama and MW. Habibi, "Architectural design of IoT-cloud computing integration platform", TELKOMNIKA, vol. 17, no. 3, pp. 1399, 2019.
+
+\bibitem{b4} Raspberry Pi. [En línea] Disponible en:
+https://www.raspberrypi.com/ [Accedido: 28-nov-2022]  
+\bibitem{b5} TensorFlow. [En línea] Disponible en: https://www.tensorflow.org/ [Accedido: 17-dic-2022] 
+
+\bibitem{b6} EdgeImpulse. [En línea] Disponible en: https://www.edgeimpulse.com/ [Accedido: 17-dic-2022]
+\bibitem{b7} The Things Network. [En línea] Disponible en: 
+https://www.thethingsnetwork.org/ [Accedido: 13-dic-2022] 
+\bibitem{b8} DataCake. [En línea] Disponible en: https://docs.datacake.de/ [Accedido: 13-dic-2022]
+
+\end{thebibliography}
+%\vspace{12pt}
+%\color{red}
+%IEEE conference templates contain guidance text for composing and formatting conference papers. Please ensure that all template text is removed from your conference paper prior to submission to the conference. Failure to remove the template text from your paper may result in your paper not being published.
+
+\end{document}
